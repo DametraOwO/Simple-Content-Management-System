@@ -6,6 +6,10 @@
     <title>Calendar</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE-3.2.0/dist/css/adminlte.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/fontawesome-free/css/all.min.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
+    <style>
+        #calendar { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); padding: 16px; }
+    </style>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -16,21 +20,81 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Calendar</h3>
-                        <a href="#" class="btn btn-primary float-right">Add Event</a>
+                        <button class="btn btn-primary float-right" data-toggle="modal" data-target="#eventModal">Add Event</button>
                     </div>
                     <div class="card-body">
-                        <div class="text-center">
-                            <p>Calendar will be displayed here.</p>
-                            <div style="height:400px; background:#f4f6f9; border:1px dashed #ccc; border-radius:8px;"></div>
-                        </div>
+                        <div id="calendar"></div>
                     </div>
                 </div>
             </div>
         </section>
     </div>
 </div>
+<!-- Event Modal -->
+<div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form id="eventForm">
+        <div class="modal-header">
+          <h5 class="modal-title" id="eventModalLabel">Add Event</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="eventTitle">Title</label>
+            <input type="text" class="form-control" id="eventTitle" name="title" required>
+          </div>
+          <div class="form-group">
+            <label for="eventDate">Date</label>
+            <input type="date" class="form-control" id="eventDate" name="date" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Add Event</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 <script src="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/jquery/jquery.min.js') }}"></script>
 <script src="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ url_for('static', filename='AdminLTE-3.2.0/dist/js/adminlte.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+<script>
+    var events = {{ events|tojson|safe }};
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            height: 600,
+            events: events,
+            selectable: true,
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            }
+        });
+        calendar.render();
+        // Add event form
+        $('#eventForm').on('submit', function(e) {
+            e.preventDefault();
+            const title = $('#eventTitle').val();
+            const date = $('#eventDate').val();
+            if (title && date) {
+                $.post("{{ url_for('add_event') }}", {title, date}, function(data) {
+                    if (data.success) {
+                        calendar.addEvent({ title, start: date });
+                        $('#eventModal').modal('hide');
+                        $('#eventForm')[0].reset();
+                    }
+                });
+            }
+        });
+    });
+</script>
 </body>
 </html> 

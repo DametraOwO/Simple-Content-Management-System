@@ -25,6 +25,12 @@ class Content(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     body = db.Column(db.Text, nullable=True)
 
+class Event(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255), nullable=False)
+    date = db.Column(db.String(50), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -116,7 +122,10 @@ def view_content(id):
 @app.route('/calendar')
 @login_required
 def calendar():
-    return render_template('calendar.html')
+    events = [
+        {"title": e.title, "start": e.date} for e in Event.query.filter_by(user_id=current_user.id).all()
+    ]
+    return render_template('calendar.html', events=events)
 
 @app.route('/contents')
 @login_required
@@ -159,6 +168,16 @@ def account():
 @app.route('/test-link')
 def test_link():
     return '<h1>Test Link Works!</h1>'
+
+@app.route('/add-event', methods=['POST'])
+@login_required
+def add_event():
+    title = request.form['title']
+    date = request.form['date']
+    event = Event(title=title, date=date, user_id=current_user.id)
+    db.session.add(event)
+    db.session.commit()
+    return {"success": True}
 
 if __name__ == '__main__':
     if not os.path.exists('cms.db'):
