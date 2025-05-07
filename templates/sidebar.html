@@ -8,7 +8,7 @@
                 <img src="https://randomuser.me/api/portraits/men/1.jpg" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="{{ url_for('account') }}" class="d-block">Tuhel rana<br><small>Content Creator</small></a>
+                <a href="{{ url_for('account') }}" class="d-block">{{ current_user.username }}<br><small>Content Creator</small></a>
             </div>
         </div>
         <nav class="mt-2">

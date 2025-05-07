@@ -122,12 +122,29 @@ def settings():
 @app.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
+    from werkzeug.security import check_password_hash
+    posts_count = Content.query.filter_by(user_id=current_user.id).count()
+    published_count = Content.query.filter_by(user_id=current_user.id, status='Published').count()
+    drafts_count = Content.query.filter_by(user_id=current_user.id, status='Draft').count()
     if request.method == 'POST':
-        new_password = request.form['password']
-        current_user.password = generate_password_hash(new_password)
+        username = request.form['username']
+        current_password = request.form['current_password']
+        new_password = request.form['new_password']
+        confirm_new_password = request.form['confirm_new_password']
+        # Update username
+        current_user.username = username
+        # Update password if provided and matches
+        if new_password:
+            if not check_password_hash(current_user.password, current_password):
+                flash('Current password is incorrect.', 'danger')
+            elif new_password != confirm_new_password:
+                flash('New passwords do not match.', 'danger')
+            else:
+                current_user.password = generate_password_hash(new_password)
+                flash('Password updated successfully!', 'success')
         db.session.commit()
-        flash('Password updated successfully!')
-    return render_template('account.html')
+        flash('Profile updated!', 'success')
+    return render_template('account.html', posts_count=posts_count, published_count=published_count, drafts_count=drafts_count)
 
 @app.route('/test-link')
 def test_link():
