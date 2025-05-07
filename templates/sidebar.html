@@ -5,14 +5,20 @@
     left: 0;
     height: 100vh;
     z-index: 1030;
+    background: #1e293b;
 }
 .content-wrapper {
     margin-left: 250px !important;
 }
+body.dark-theme, .dark-theme .content-wrapper, .dark-theme .main-sidebar { background: #181a1b !important; color: #e0e0e0 !important; }
+.dark-theme .card, .dark-theme .content-card, .dark-theme .profile-card, .dark-theme .card-header, .dark-theme .card-body { background: #23272b !important; color: #e0e0e0 !important; }
+.dark-theme .main-sidebar { background: #111317 !important; }
+.dark-theme .btn, .dark-theme .btn-primary, .dark-theme .btn-danger { color: #fff !important; }
+.dark-theme .table, .dark-theme .table-striped { color: #e0e0e0 !important; }
 </style>
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <a href="#" class="brand-link">
-        <span class="brand-text font-weight-light">Xellora</span>
+        <span class="brand-text font-weight-light">DametraOwO</span>
     </a>
     <div class="sidebar">
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
@@ -36,4 +42,55 @@
             <a href="{{ url_for('logout') }}" class="btn btn-block btn-danger">Sign out</a>
         </div>
     </div>
-</aside> 
+</aside>
+<script src="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/jquery/jquery.min.js') }}"></script>
+<script>
+(function() {
+    // Apply theme and language on every page load
+    function applyTheme(theme) {
+        if (theme === 'dark') {
+            document.body.classList.add('dark-theme');
+        } else {
+            document.body.classList.remove('dark-theme');
+        }
+    }
+    function applyLanguage(lang) {
+        // Only update settings page labels if present
+        if (document.getElementById('settingsTitle')) {
+            if (lang === 'id') {
+                document.getElementById('settingsTitle').innerText = 'Pengaturan';
+                document.getElementById('profileSettings').innerText = 'Pengaturan Profil';
+                document.getElementById('displayNameLabel').innerText = 'Nama Tampilan';
+                document.getElementById('languageLabel').innerText = 'Bahasa';
+                document.getElementById('themeTitle').innerText = 'Tema';
+                document.getElementById('chooseThemeLabel').innerText = 'Pilih Tema';
+                if(document.getElementById('applyBtn')) document.getElementById('applyBtn').innerText = 'Terapkan';
+                document.getElementById('notifPref').innerText = 'Preferensi Notifikasi';
+                document.getElementById('notif1Label').innerText = 'Email saya tentang fitur baru';
+                document.getElementById('notif2Label').innerText = 'Kirim ringkasan aktivitas mingguan';
+                document.getElementById('notif3Label').innerText = 'Beritahu saya tentang komentar';
+                document.getElementById('personalizeTitle').innerText = 'Personalisasi Pengalaman Anda';
+                document.getElementById('personalizeDesc').innerText = 'Atur preferensi dan pengaturan Anda agar DametraOwO CMS bekerja optimal untuk Anda.';
+            } else {
+                document.getElementById('settingsTitle').innerText = 'Settings';
+                document.getElementById('profileSettings').innerText = 'Profile Settings';
+                document.getElementById('displayNameLabel').innerText = 'Display Name';
+                document.getElementById('languageLabel').innerText = 'Language';
+                document.getElementById('themeTitle').innerText = 'Theme';
+                document.getElementById('chooseThemeLabel').innerText = 'Choose Theme';
+                if(document.getElementById('applyBtn')) document.getElementById('applyBtn').innerText = 'Apply';
+                document.getElementById('notifPref').innerText = 'Notification Preferences';
+                document.getElementById('notif1Label').innerText = 'Email me about new features';
+                document.getElementById('notif2Label').innerText = 'Send weekly activity summary';
+                document.getElementById('notif3Label').innerText = 'Notify me about comments';
+                document.getElementById('personalizeTitle').innerText = 'Personalize Your Experience';
+                document.getElementById('personalizeDesc').innerText = 'Adjust your preferences and settings to make DametraOwO CMS work best for you.';
+            }
+        }
+    }
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    const savedLang = localStorage.getItem('lang') || 'en';
+    applyTheme(savedTheme);
+    applyLanguage(savedLang);
+})();
+</script> 

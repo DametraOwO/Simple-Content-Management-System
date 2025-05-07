@@ -6,23 +6,108 @@
     <title>Settings</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE-3.2.0/dist/css/adminlte.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/fontawesome-free/css/all.min.css') }}">
+    <style>
+        .settings-section { margin-bottom: 32px; }
+        .settings-label { font-weight: 500; }
+        .custom-switch { margin-left: 1rem; }
+        /* Dark theme styles */
+        body.dark-theme { background: #181a1b !important; color: #e0e0e0 !important; }
+        body.dark-theme .content-wrapper { background: #181a1b !important; color: #e0e0e0 !important; }
+        body.dark-theme .main-sidebar { background: #111317 !important; }
+        body.dark-theme .card { background: #23272b !important; color: #e0e0e0 !important; }
+        body.dark-theme .card-header { background: #2c3338 !important; color: #e0e0e0 !important; }
+        body.dark-theme .card-body { background: #23272b !important; color: #e0e0e0 !important; }
+        body.dark-theme .form-control { background: #2c3338 !important; color: #e0e0e0 !important; border-color: #404040 !important; }
+        body.dark-theme .form-control:focus { background: #2c3338 !important; color: #e0e0e0 !important; }
+        body.dark-theme .custom-control-label { color: #e0e0e0 !important; }
+        /* Button styles for dark theme */
+        body.dark-theme .btn-light {
+            background-color: #2c3338 !important;
+            border-color: #404040 !important;
+            color: #e0e0e0 !important;
+        }
+        body.dark-theme .btn-light:hover {
+            background-color: #363b40 !important;
+            border-color: #4a4a4a !important;
+            color: #ffffff !important;
+        }
+        body.dark-theme .bg-gradient-primary {
+            background: linear-gradient(45deg, #2c3338 0%, #23272b 100%) !important;
+        }
+    </style>
 </head>
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini" id="mainBody">
 <div class="wrapper">
     {% include 'sidebar.html' %}
     <div class="content-wrapper" style="margin-left: 250px;">
         <section class="content pt-4">
             <div class="container-fluid">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Settings</h3>
+                <h2 class="mb-4" id="settingsTitle">Settings</h2>
+                <div class="row">
+                    <div class="col-md-7">
+                        <form id="settingsForm">
+                            <div class="card settings-section">
+                                <div class="card-header">
+                                    <h3 class="card-title" id="profileSettings">Profile Settings</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label class="settings-label" id="displayNameLabel">Display Name</label>
+                                        <input type="text" class="form-control" value="{{ current_user.username }}" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="settings-label" id="languageLabel">Language</label>
+                                        <select class="form-control" id="languageSelect">
+                                            <option value="en">English</option>
+                                            <option value="id">Bahasa Indonesia</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card settings-section">
+                                <div class="card-header">
+                                    <h3 class="card-title" id="themeTitle">Theme</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label class="settings-label" id="chooseThemeLabel">Choose Theme</label>
+                                        <select class="form-control" id="themeSelect">
+                                            <option value="light">Light</option>
+                                            <option value="dark">Dark</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="card settings-section">
+                            <div class="card-header">
+                                <h3 class="card-title" id="notifPref">Notification Preferences</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="notif1" checked>
+                                    <label class="custom-control-label" for="notif1" id="notif1Label">Email me about new features</label>
+                                </div>
+                                <div class="custom-control custom-switch mt-2">
+                                    <input type="checkbox" class="custom-control-input" id="notif2">
+                                    <label class="custom-control-label" for="notif2" id="notif2Label">Send weekly activity summary</label>
+                                </div>
+                                <div class="custom-control custom-switch mt-2">
+                                    <input type="checkbox" class="custom-control-input" id="notif3" checked>
+                                    <label class="custom-control-label" for="notif3" id="notif3Label">Notify me about comments</label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <h5>User Preferences</h5>
-                        <p>Settings for notifications, language, etc.</p>
-                        <hr>
-                        <h5>App Settings</h5>
-                        <p>General application settings and configurations.</p>
+                    <div class="col-md-5">
+                        <div class="card bg-gradient-primary text-white">
+                            <div class="card-body text-center">
+                                <i class="fas fa-cogs fa-3x mb-3"></i>
+                                <h4 id="personalizeTitle">Personalize Your Experience</h4>
+                                <p id="personalizeDesc">Adjust your preferences and settings to make DametraOwO CMS work best for you.</p>
+                                <button type="button" id="applySettingsBtn" class="btn btn-light">Apply Changes</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -32,5 +117,90 @@
 <script src="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/jquery/jquery.min.js') }}"></script>
 <script src="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ url_for('static', filename='AdminLTE-3.2.0/dist/js/adminlte.min.js') }}"></script>
+<script>
+// Theme and language persistence
+function applyTheme(theme) {
+    const body = document.body;
+    if (theme === 'dark') {
+        body.classList.add('dark-theme');
+        // Force refresh of all themed elements
+        document.querySelectorAll('.card, .card-header, .card-body, .form-control').forEach(el => {
+            el.style.transition = 'background-color 0.3s ease';
+        });
+    } else {
+        body.classList.remove('dark-theme');
+        // Reset any inline styles
+        document.querySelectorAll('.card, .card-header, .card-body, .form-control').forEach(el => {
+            el.style.transition = '';
+        });
+    }
+}
+
+function applyLanguage(lang) {
+    if (lang === 'id') {
+        document.getElementById('settingsTitle').innerText = 'Pengaturan';
+        document.getElementById('profileSettings').innerText = 'Pengaturan Profil';
+        document.getElementById('displayNameLabel').innerText = 'Nama Tampilan';
+        document.getElementById('languageLabel').innerText = 'Bahasa';
+        document.getElementById('themeTitle').innerText = 'Tema';
+        document.getElementById('chooseThemeLabel').innerText = 'Pilih Tema';
+        document.getElementById('applySettingsBtn').innerText = 'Terapkan Perubahan';
+        document.getElementById('notifPref').innerText = 'Preferensi Notifikasi';
+        document.getElementById('notif1Label').innerText = 'Email saya tentang fitur baru';
+        document.getElementById('notif2Label').innerText = 'Kirim ringkasan aktivitas mingguan';
+        document.getElementById('notif3Label').innerText = 'Beritahu saya tentang komentar';
+        document.getElementById('personalizeTitle').innerText = 'Personalisasi Pengalaman Anda';
+        document.getElementById('personalizeDesc').innerText = 'Atur preferensi dan pengaturan Anda agar DametraOwO CMS bekerja optimal untuk Anda.';
+    } else {
+        document.getElementById('settingsTitle').innerText = 'Settings';
+        document.getElementById('profileSettings').innerText = 'Profile Settings';
+        document.getElementById('displayNameLabel').innerText = 'Display Name';
+        document.getElementById('languageLabel').innerText = 'Language';
+        document.getElementById('themeTitle').innerText = 'Theme';
+        document.getElementById('chooseThemeLabel').innerText = 'Choose Theme';
+        document.getElementById('applySettingsBtn').innerText = 'Apply Changes';
+        document.getElementById('notifPref').innerText = 'Notification Preferences';
+        document.getElementById('notif1Label').innerText = 'Email me about new features';
+        document.getElementById('notif2Label').innerText = 'Send weekly activity summary';
+        document.getElementById('notif3Label').innerText = 'Notify me about comments';
+        document.getElementById('personalizeTitle').innerText = 'Personalize Your Experience';
+        document.getElementById('personalizeDesc').innerText = 'Adjust your preferences and settings to make DametraOwO CMS work best for you.';
+    }
+}
+
+function saveAndApplySettings() {
+    const theme = document.getElementById('themeSelect').value;
+    const lang = document.getElementById('languageSelect').value;
+    
+    // Save to localStorage
+    localStorage.setItem('theme', theme);
+    localStorage.setItem('lang', lang);
+    
+    // Apply the settings
+    applyTheme(theme);
+    applyLanguage(lang);
+    
+    // Reload the page to apply changes globally
+    location.reload();
+}
+
+// Initialize settings on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Load saved preferences
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    const savedLang = localStorage.getItem('lang') || 'en';
+    
+    // Set initial values
+    document.getElementById('themeSelect').value = savedTheme;
+    document.getElementById('languageSelect').value = savedLang;
+    
+    // Apply saved settings
+    applyTheme(savedTheme);
+    applyLanguage(savedLang);
+    
+    // Add event listener for apply button
+    document.getElementById('applySettingsBtn').addEventListener('click', saveAndApplySettings);
+});
+</script>
 </body>
 </html> 
