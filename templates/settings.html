@@ -34,6 +34,96 @@
         body.dark-theme .bg-gradient-primary {
             background: linear-gradient(45deg, #2c3338 0%, #23272b 100%) !important;
         }
+
+        /* Animation styles */
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .settings-section {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        .settings-section:nth-child(1) { animation-delay: 0.1s; }
+        .settings-section:nth-child(2) { animation-delay: 0.2s; }
+        .settings-section:nth-child(3) { animation-delay: 0.3s; }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-control {
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-control:focus {
+            transform: scale(1.01);
+        }
+
+        .custom-switch {
+            transition: transform 0.2s ease;
+        }
+        .custom-switch:hover {
+            transform: scale(1.05);
+        }
+
+        .btn {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+        .btn:active::after {
+            width: 200px;
+            height: 200px;
+        }
+
+        .fa-cogs {
+            animation: spin 20s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Toast notification styles */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .toast {
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 5px;
+            margin-top: 10px;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
     </style>
 </head>
 <body class="hold-transition sidebar-mini" id="mainBody">
@@ -168,6 +258,25 @@ function applyLanguage(lang) {
     }
 }
 
+function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    document.querySelector('.toast-container').appendChild(toast);
+    
+    // Trigger reflow
+    toast.offsetHeight;
+    
+    // Show toast
+    toast.classList.add('show');
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
 function saveAndApplySettings() {
     const theme = document.getElementById('themeSelect').value;
     const lang = document.getElementById('languageSelect').value;
@@ -180,12 +289,20 @@ function saveAndApplySettings() {
     applyTheme(theme);
     applyLanguage(lang);
     
+    // Show success message
+    showToast(lang === 'id' ? 'Pengaturan berhasil disimpan!' : 'Settings saved successfully!');
+    
     // Reload the page to apply changes globally
-    location.reload();
+    setTimeout(() => location.reload(), 1000);
 }
 
 // Initialize settings on page load
 document.addEventListener('DOMContentLoaded', function() {
+    // Add toast container
+    const toastContainer = document.createElement('div');
+    toastContainer.className = 'toast-container';
+    document.body.appendChild(toastContainer);
+
     // Load saved preferences
     const savedTheme = localStorage.getItem('theme') || 'light';
     const savedLang = localStorage.getItem('lang') || 'en';
@@ -200,6 +317,33 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Add event listener for apply button
     document.getElementById('applySettingsBtn').addEventListener('click', saveAndApplySettings);
+
+    // Add hover effect to cards
+    document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            card.style.transform = 'translateY(-5px)';
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'translateY(0)';
+        });
+    });
+
+    // Add ripple effect to buttons
+    document.querySelectorAll('.btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            const x = e.clientX - e.target.getBoundingClientRect().left;
+            const y = e.clientY - e.target.getBoundingClientRect().top;
+            
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple';
+            ripple.style.left = `${x}px`;
+            ripple.style.top = `${y}px`;
+            
+            this.appendChild(ripple);
+            
+            setTimeout(() => ripple.remove(), 600);
+        });
+    });
 });
 </script>
 </body>

@@ -6,46 +6,113 @@
     <title>Login</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE-3.2.0/dist/css/adminlte.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
 </head>
 <body class="hold-transition login-page">
-<div class="login-box">
-    <div class="card card-outline card-primary">
-        <div class="card-header text-center">
-            <a href="#" class="h1"><b>DametraOwO</b> CMS</a>
+    <canvas id="bg-canvas"></canvas>
+    <div class="login-box page-content">
+        <div class="login-logo animate-item">
+            <a href="{{ url_for('login') }}"><b>DametraOwO</b> CMS</a>
         </div>
-        <div class="card-body">
-            <p class="login-box-msg">Sign in to start your session</p>
-            <form method="POST">
-                <div class="input-group mb-3">
-                    <input type="text" name="username" class="form-control" placeholder="Username" required>
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-user"></span>
+        <div class="card animate-item">
+            <div class="card-body login-card-body">
+                <p class="login-box-msg">Sign in to start your session</p>
+                <form action="{{ url_for('login') }}" method="post">
+                    <div class="input-group mb-3 animate-item">
+                        <input type="text" class="form-control" placeholder="Username" name="username" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="input-group mb-3">
-                    <input type="password" name="password" class="form-control" placeholder="Password" required>
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-lock"></span>
+                    <div class="input-group mb-3 animate-item">
+                        <input type="password" class="form-control" placeholder="Password" name="password" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-8">
-                        <a href="{{ url_for('register') }}">Register a new account</a>
+                    <div class="row animate-item">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                        </div>
                     </div>
-                    <div class="col-4">
-                        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
-                    </div>
-                </div>
-            </form>
+                </form>
+                <p class="mb-1 mt-3 animate-item">
+                    <a href="{{ url_for('register') }}">Register a new account</a>
+                </p>
+            </div>
         </div>
     </div>
-</div>
-<script src="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/jquery/jquery.min.js') }}"></script>
-<script src="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-<script src="{{ url_for('static', filename='AdminLTE-3.2.0/dist/js/adminlte.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/jquery/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='AdminLTE-3.2.0/dist/js/adminlte.min.js') }}"></script>
 </body>
-</html> 
+</html>
+<style>
+#bg-canvas {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 0;
+    width: 100vw;
+    height: 100vh;
+    display: block;
+    background: #f4f6fa;
+}
+.login-box, .card, .login-logo, .login-card-body {
+    position: relative;
+    z-index: 1;
+}
+</style>
+<script>
+// Floating bubbles animation
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let bubbles = [];
+const colors = ['#a5b4fc', '#fbc2eb', '#b2fefa', '#f9f586', '#f6d365', '#fdc094'];
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+function createBubble() {
+    return {
+        x: Math.random() * canvas.width,
+        y: canvas.height + 20 + Math.random() * 100,
+        r: 10 + Math.random() * 30,
+        speed: 0.5 + Math.random() * 1.5,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        alpha: 0.3 + Math.random() * 0.4
+    };
+}
+function drawBubbles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let b of bubbles) {
+        ctx.save();
+        ctx.globalAlpha = b.alpha;
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, b.r, 0, 2 * Math.PI);
+        ctx.fillStyle = b.color;
+        ctx.shadowColor = b.color;
+        ctx.shadowBlur = 12;
+        ctx.fill();
+        ctx.restore();
+        b.y -= b.speed;
+        if (b.y + b.r < 0) {
+            // Reset bubble to bottom
+            Object.assign(b, createBubble());
+            b.y = canvas.height + b.r;
+        }
+    }
+}
+function animate() {
+    drawBubbles();
+    requestAnimationFrame(animate);
+}
+// Initialize bubbles
+bubbles = Array.from({length: 24}, createBubble);
+animate();
+</script> 

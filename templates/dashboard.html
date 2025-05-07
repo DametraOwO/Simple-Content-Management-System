@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE-3.2.0/dist/css/adminlte.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE-3.2.0/dist/css/alt/adminlte.light.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
     <style>
         body { background: #f4f6f9; }
         .user-panel img { object-fit: cover; }
@@ -19,12 +20,12 @@
     <!-- Sidebar -->
     {% include 'sidebar.html' %}
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper" style="margin-left: 250px;">
+    <div class="content-wrapper page-content" style="margin-left: 250px;">
         <section class="content pt-4">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-3">
-                        <div class="small-box bg-white shadow-sm">
+                        <div class="small-box bg-white shadow-sm animate-item">
                             <div class="inner">
                                 <h3>21</h3>
                                 <p>Contents Created</p>
@@ -36,7 +37,7 @@
                         </div>
                     </div>
                     <div class="col-md-5">
-                        <div class="card">
+                        <div class="card animate-item">
                             <div class="card-body">
                                 <h5>Click Through Rate</h5>
                                 <canvas id="ctrChart" height="80"></canvas>
@@ -52,7 +53,7 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="card bg-primary text-white">
+                        <div class="card bg-primary text-white animate-item">
                             <div class="card-body text-center">
                                 <img src="https://randomuser.me/api/portraits/men/2.jpg" class="img-circle mb-2" width="60" alt="Upgrade">
                                 <h5>Upgrade your plan</h5>
@@ -64,7 +65,7 @@
                 </div>
                 <div class="row mt-4">
                     <div class="col-12">
-                        <div class="card">
+                        <div class="card animate-item">
                             <div class="card-header">
                                 <h3 class="card-title">Your last week content overview</h3>
                                 <div class="card-tools">
@@ -85,7 +86,7 @@
                                     </thead>
                                     <tbody>
                                         {% for content in contents %}
-                                        <tr>
+                                        <tr class="animate-item">
                                             <td>{{ content.platform }}</td>
                                             <td>{{ content.title }}</td>
                                             <td><span class="badge badge-{{ 'success' if content.status == 'Published' else 'warning' if content.status == 'Draft' else 'danger' }}">{{ content.status }}</span></td>

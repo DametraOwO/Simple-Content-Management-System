@@ -3,22 +3,59 @@
     position: fixed;
     top: 0;
     left: 0;
-    height: 100vh;
-    z-index: 1030;
+    min-height: 100vh;
+    z-index: 1000;
+    width: 250px;
+    transition: all 0.3s;
     background: #1e293b;
 }
 .content-wrapper {
-    margin-left: 250px !important;
+    margin-left: 250px;
+    min-height: 100vh;
+    transition: all 0.3s;
 }
 body.dark-theme, .dark-theme .content-wrapper, .dark-theme .main-sidebar { background: #181a1b !important; color: #e0e0e0 !important; }
 .dark-theme .card, .dark-theme .content-card, .dark-theme .profile-card, .dark-theme .card-header, .dark-theme .card-body { background: #23272b !important; color: #e0e0e0 !important; }
 .dark-theme .main-sidebar { background: #111317 !important; }
 .dark-theme .btn, .dark-theme .btn-primary, .dark-theme .btn-danger { color: #fff !important; }
 .dark-theme .table, .dark-theme .table-striped { color: #e0e0e0 !important; }
+
+.main-sidebar::-webkit-scrollbar {
+    width: 5px;
+}
+
+.main-sidebar::-webkit-scrollbar-track {
+    background: #343a40;
+}
+
+.main-sidebar::-webkit-scrollbar-thumb {
+    background: #6c757d;
+    border-radius: 3px;
+}
+
+.main-sidebar::-webkit-scrollbar-thumb:hover {
+    background: #495057;
+}
+
+@media (max-width: 991.98px) {
+    .main-sidebar {
+        margin-left: -250px;
+    }
+    .main-sidebar.show {
+        margin-left: 0;
+    }
+    .content-wrapper {
+        margin-left: 0;
+    }
+    .content-wrapper.show {
+        margin-left: 250px;
+    }
+}
 </style>
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <a href="#" class="brand-link">
-        <span class="brand-text font-weight-light">DametraOwO</span>
+<aside class="main-sidebar sidebar-dark-primary elevation-4" style="position: fixed; height: 100vh; overflow-y: auto;">
+    <a href="{{ url_for('dashboard') }}" class="brand-link">
+        <img src="{{ url_for('static', filename='AdminLTE-3.2.0/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light">DametraOwO CMS</span>
     </a>
     <div class="sidebar">
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
@@ -30,17 +67,45 @@ body.dark-theme, .dark-theme .content-wrapper, .dark-theme .main-sidebar { backg
             </div>
         </div>
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" role="menu">
-                <li class="nav-item"><a href="{{ url_for('dashboard') }}" class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}"><i class="nav-icon fas fa-tachometer-alt"></i> <p>Dashboard</p></a></li>
-                <li class="nav-item"><a href="{{ url_for('content_board') }}" class="nav-link {% if request.endpoint == 'content_board' %}active{% endif %}"><i class="nav-icon fas fa-th"></i> <p>Content Board</p></a></li>
-                <li class="nav-item"><a href="{{ url_for('calendar') }}" class="nav-link {% if request.endpoint == 'calendar' %}active{% endif %}"><i class="nav-icon fas fa-calendar"></i> <p>Calendar</p></a></li>
-                <li class="nav-item"><a href="{{ url_for('contents') }}" class="nav-link {% if request.endpoint == 'contents' %}active{% endif %}"><i class="nav-icon fas fa-list"></i> <p>Contents</p></a></li>
-                <li class="nav-item"><a href="{{ url_for('settings') }}" class="nav-link {% if request.endpoint == 'settings' %}active{% endif %}"><i class="nav-icon fas fa-cog"></i> <p>Settings</p></a></li>
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-item">
+                    <a href="{{ url_for('dashboard') }}" class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('content_board') }}" class="nav-link {% if request.endpoint == 'content_board' %}active{% endif %}">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>Content Board</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('contents') }}" class="nav-link {% if request.endpoint == 'contents' %}active{% endif %}">
+                        <i class="nav-icon fas fa-file-alt"></i>
+                        <p>Contents</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('calendar') }}" class="nav-link {% if request.endpoint == 'calendar' %}active{% endif %}">
+                        <i class="nav-icon fas fa-calendar"></i>
+                        <p>Calendar</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('settings') }}" class="nav-link {% if request.endpoint == 'settings' %}active{% endif %}">
+                        <i class="nav-icon fas fa-cog"></i>
+                        <p>Settings</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('logout') }}" class="nav-link">
+                        <i class="nav-icon fas fa-sign-out-alt"></i>
+                        <p>Logout</p>
+                    </a>
+                </li>
             </ul>
         </nav>
-        <div class="mt-5">
-            <a href="{{ url_for('logout') }}" class="btn btn-block btn-danger">Sign out</a>
-        </div>
     </div>
 </aside>
 <script src="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/jquery/jquery.min.js') }}"></script>
@@ -93,4 +158,33 @@ body.dark-theme, .dark-theme .content-wrapper, .dark-theme .main-sidebar { backg
     applyTheme(savedTheme);
     applyLanguage(savedLang);
 })();
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Add toggle button for mobile
+    const toggleBtn = document.createElement('button');
+    toggleBtn.className = 'btn btn-dark d-lg-none position-fixed';
+    toggleBtn.style.cssText = 'top: 10px; left: 10px; z-index: 1001;';
+    toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
+    document.body.appendChild(toggleBtn);
+
+    // Toggle sidebar on mobile
+    toggleBtn.addEventListener('click', function() {
+        document.querySelector('.main-sidebar').classList.toggle('show');
+        document.querySelector('.content-wrapper').classList.toggle('show');
+    });
+
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener('click', function(e) {
+        if (window.innerWidth < 992) {
+            const sidebar = document.querySelector('.main-sidebar');
+            const content = document.querySelector('.content-wrapper');
+            const toggle = document.querySelector('.btn-dark');
+            
+            if (!sidebar.contains(e.target) && !toggle.contains(e.target) && sidebar.classList.contains('show')) {
+                sidebar.classList.remove('show');
+                content.classList.remove('show');
+            }
+        }
+    });
+});
 </script> 

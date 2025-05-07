@@ -6,6 +6,7 @@
     <title>{{ content.title }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE-3.2.0/dist/css/adminlte.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
     <style>
         .content-card { max-width: 700px; margin: 40px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); padding: 32px; }
         .content-card h2 { margin-bottom: 12px; }
@@ -15,13 +16,37 @@
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
     {% include 'sidebar.html' %}
-    <div class="content-wrapper" style="margin-left: 250px;">
+    <div class="content-wrapper page-content" style="margin-left: 250px;">
         <section class="content pt-4">
             <div class="container-fluid">
-                <div class="content-card">
-                    <h2>{{ content.title }}</h2>
-                    <div class="meta"><i class="far fa-clock"></i> {{ content.date }}</div>
-                    <div>{{ content.body }}</div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card animate-item">
+                            <div class="card-header">
+                                <h3 class="card-title">{{ content.title }}</h3>
+                                <div class="card-tools">
+                                    <span class="badge badge-{{ 'success' if content.status == 'Published' else 'warning' if content.status == 'Draft' else 'danger' }}">{{ content.status }}</span>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row animate-item">
+                                    <div class="col-md-6">
+                                        <p><strong>Platform:</strong> {{ content.platform }}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><strong>Date:</strong> {{ content.date }}</p>
+                                    </div>
+                                </div>
+                                <div class="content-body animate-item">
+                                    {{ content.body }}
+                                </div>
+                            </div>
+                            <div class="card-footer animate-item">
+                                <a href="{{ url_for('edit_content', id=content.id) }}" class="btn btn-primary">Edit</a>
+                                <a href="{{ url_for('dashboard') }}" class="btn btn-default">Back to Dashboard</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

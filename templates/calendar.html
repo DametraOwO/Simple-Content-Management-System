@@ -6,108 +6,242 @@
     <title>Calendar</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE-3.2.0/dist/css/adminlte.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
     <style>
-        #calendar { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); padding: 16px; }
+        #calendar {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            padding: 8px;
+            height: 500px;
+            min-height: unset;
+            width: 100%;
+            margin: 0 auto;
+        }
+        .fc-event {
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        .dark-theme #calendar {
+            background: #23272b;
+        }
+        .dark-theme .fc-theme-standard td, 
+        .dark-theme .fc-theme-standard th {
+            border-color: #444;
+        }
+        .dark-theme .fc-theme-standard .fc-scrollgrid {
+            border-color: #444;
+        }
+        .dark-theme .fc-daygrid-day {
+            background: #23272b;
+        }
+        .dark-theme .fc-daygrid-day-number {
+            color: #e0e0e0;
+        }
+        .dark-theme .fc-col-header-cell {
+            background: #1e293b;
+            color: #e0e0e0;
+        }
+        .calendar-container {
+            margin-left: 250px;
+            padding: 24px 8px 8px 8px;
+            min-height: 100vh;
+            background: #f4f6f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .fc .fc-daygrid-body {
+            min-height: unset !important;
+            height: calc(100% - 40px) !important;
+        }
+        .fc .fc-scrollgrid-sync-table {
+            height: 100% !important;
+        }
+        .fc .fc-daygrid-day {
+            height: calc((500px - 40px) / 6) !important;
+            /* 40px for header, 6 weeks max */
+        }
+        @media (max-width: 991.98px) {
+            .calendar-container {
+                margin-left: 0;
+                padding: 8px 2px;
+            }
+            #calendar {
+                height: 350px;
+            }
+            .fc .fc-daygrid-day {
+                height: calc((350px - 40px) / 6) !important;
+            }
+        }
     </style>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
     {% include 'sidebar.html' %}
-    <div class="content-wrapper" style="margin-left: 250px;">
-        <section class="content pt-4">
-            <div class="container-fluid">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Calendar</h3>
-                        <button class="btn btn-primary float-right" data-toggle="modal" data-target="#eventModal">Add Event</button>
-                    </div>
-                    <div class="card-body">
-                        <div id="calendar"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <div class="calendar-container page-content">
+        <div class="w-100 d-flex justify-content-between align-items-center mb-3">
+            <h2 class="mb-0">Calendar</h2>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#eventModal">Add Event</button>
+        </div>
+        <div id="calendar" class="w-100"></div>
     </div>
 </div>
 <!-- Event Modal -->
 <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <form id="eventForm">
-        <div class="modal-header">
-          <h5 class="modal-title" id="eventModalLabel">Add Event</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="eventForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eventModalLabel">Add Event</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="eventTitle">Title</label>
+                        <input type="text" class="form-control" id="eventTitle" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventDate">Date</label>
+                        <input type="date" class="form-control" id="eventDate" name="date" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add Event</button>
+                </div>
+            </form>
         </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <label for="eventTitle">Title</label>
-            <input type="text" class="form-control" id="eventTitle" name="title" required>
-          </div>
-          <div class="form-group">
-            <label for="eventDate">Date</label>
-            <input type="date" class="form-control" id="eventDate" name="date" required>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Add Event</button>
-        </div>
-      </form>
     </div>
-  </div>
 </div>
 <script src="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/jquery/jquery.min.js') }}"></script>
 <script src="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ url_for('static', filename='AdminLTE-3.2.0/dist/js/adminlte.min.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 <script>
-    var events = {{ events|tojson|safe }};
-    var calendar;
-    function renderCalendar(theme) {
-        var calendarEl = document.getElementById('calendar');
-        if (calendar) calendar.destroy();
-        calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            height: 600,
-            events: events,
-            selectable: true,
-            themeSystem: theme === 'dark' ? 'bootstrap' : 'standard',
-            headerToolbar: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        events: [
+            {
+                title: 'Project Kickoff',
+                start: '2025-05-05',
+                allDay: true,
+                backgroundColor: '#228be6',
+                borderColor: '#228be6'
+            },
+            {
+                title: 'Team Sync',
+                start: '2025-05-12T11:00:00',
+                end: '2025-05-12T12:00:00',
+                backgroundColor: '#15aabf',
+                borderColor: '#15aabf'
+            },
+            {
+                title: 'Content Deadline',
+                start: '2025-05-18',
+                allDay: true,
+                backgroundColor: '#fab005',
+                borderColor: '#fab005'
+            },
+            {
+                title: 'Feedback Session',
+                start: '2025-05-25T15:00:00',
+                end: '2025-05-25T16:00:00',
+                backgroundColor: '#e8590c',
+                borderColor: '#e8590c'
+            },
+            {
+                title: 'Admin\'s Birthday',
+                start: '2025-06-27',
+                allDay: true,
+                backgroundColor: '#ff6b6b',
+                borderColor: '#ff6b6b'
+            },
+            {
+                title: 'Content Planning Meeting',
+                start: '2025-06-15T10:00:00',
+                end: '2025-06-15T12:00:00',
+                backgroundColor: '#4dabf7',
+                borderColor: '#4dabf7'
+            },
+            {
+                title: 'Monthly Review',
+                start: '2025-06-30T14:00:00',
+                end: '2025-06-30T16:00:00',
+                backgroundColor: '#51cf66',
+                borderColor: '#51cf66'
+            },
+            {
+                title: 'Content Creation Workshop',
+                start: '2025-07-10T09:00:00',
+                end: '2025-07-10T17:00:00',
+                backgroundColor: '#ffd43b',
+                borderColor: '#ffd43b'
+            },
+            {
+                title: 'Team Building',
+                start: '2025-07-20',
+                end: '2025-07-21',
+                backgroundColor: '#cc5de8',
+                borderColor: '#cc5de8'
+            },
+            {
+                title: 'Quarterly Planning',
+                start: '2025-07-25T13:00:00',
+                end: '2025-07-25T15:00:00',
+                backgroundColor: '#ff922b',
+                borderColor: '#ff922b'
             }
-        });
-        calendar.render();
-    }
-    document.addEventListener('DOMContentLoaded', function() {
-        var theme = localStorage.getItem('theme') || 'light';
-        renderCalendar(theme);
-        // Add event form
-        $('#eventForm').on('submit', function(e) {
-            e.preventDefault();
-            const title = $('#eventTitle').val();
-            const date = $('#eventDate').val();
-            if (title && date) {
-                $.post("{{ url_for('add_event') }}", {title, date}, function(data) {
-                    if (data.success) {
-                        calendar.addEvent({ title, start: date });
-                        $('#eventModal').modal('hide');
-                        $('#eventForm')[0].reset();
-                    }
-                });
-            }
-        });
-        // Listen for theme changes
-        window.addEventListener('storage', function(e) {
-            if (e.key === 'theme') {
-                renderCalendar(e.newValue);
-            }
-        });
+        ],
+        eventClick: function(info) {
+            alert('Event: ' + info.event.title);
+        },
+        eventDidMount: function(info) {
+            $(info.el).tooltip({
+                title: info.event.title,
+                placement: 'top',
+                trigger: 'hover',
+                container: 'body'
+            });
+        }
     });
+    calendar.render();
+
+    // Add event form
+    $('#eventForm').on('submit', function(e) {
+        e.preventDefault();
+        const title = $('#eventTitle').val();
+        const date = $('#eventDate').val();
+        if (title && date) {
+            $.post("{{ url_for('add_event') }}", {title, date}, function(data) {
+                if (data.success) {
+                    calendar.addEvent({ title, start: date });
+                    $('#eventModal').modal('hide');
+                    $('#eventForm')[0].reset();
+                }
+            });
+        }
+    });
+
+    // Listen for theme changes
+    window.addEventListener('storage', function(e) {
+        if (e.key === 'theme') {
+            document.body.classList.toggle('dark-theme', e.newValue === 'dark');
+        }
+    });
+});
 </script>
 </body>
 </html> 

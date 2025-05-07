@@ -6,6 +6,7 @@
     <title>Content Board</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE-3.2.0/dist/css/adminlte.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
     <style>
         .card-grid { display: flex; flex-wrap: wrap; gap: 24px; }
         .content-card { flex: 1 1 45%; min-width: 350px; max-width: 48%; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin-bottom: 24px; padding: 24px; }
@@ -17,16 +18,22 @@
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
     {% include 'sidebar.html' %}
-    <div class="content-wrapper" style="margin-left: 250px;">
+    <div class="content-wrapper page-content" style="margin-left: 250px;">
         <section class="content pt-4">
             <div class="container-fluid">
                 <div class="card-grid">
                     {% for content in contents %}
-                    <div class="content-card">
+                    <div class="content-card animate-item">
                         <h5>{{ content.title }}</h5>
-                        <div class="meta"><i class="far fa-clock"></i> {{ content.date }}</div>
+                        <div class="meta">
+                            <i class="far fa-clock"></i> {{ content.date }}
+                            <span class="badge badge-{{ 'success' if content.status == 'Published' else 'warning' if content.status == 'Draft' else 'danger' }} ml-2">{{ content.status }}</span>
+                        </div>
                         <div class="excerpt">{{ content.body[:200] }}{% if content.body|length > 200 %}...{% endif %}</div>
-                        <a href="{{ url_for('view_content', id=content.id) }}" class="btn btn-primary btn-sm">Read More</a>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="{{ url_for('view_content', id=content.id) }}" class="btn btn-primary btn-sm">Read More</a>
+                            <a href="{{ url_for('edit_content', id=content.id) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                        </div>
                     </div>
                     {% endfor %}
                 </div>
