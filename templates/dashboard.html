@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- AdminLTE CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE-3.2.0/dist/css/adminlte.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE-3.2.0/dist/css/alt/adminlte.light.min.css') }}">
+    <style>
+        body { background: #f4f6f9; }
+        .main-sidebar { background: #1e293b; }
+        .user-panel img { object-fit: cover; }
+        .content-wrapper { background: #f4f6f9; }
+    </style>
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <!-- Sidebar -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <a href="#" class="brand-link">
+            <span class="brand-text font-weight-light">Xellora</span>
+        </a>
+        <div class="sidebar">
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    <img src="https://randomuser.me/api/portraits/men/1.jpg" class="img-circle elevation-2" alt="User Image">
+                </div>
+                <div class="info">
+                    <a href="#" class="d-block">Tuhel rana<br><small>Content Creator</small></a>
+                </div>
+            </div>
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
+                    <li class="nav-item"><a href="#" class="nav-link active"><i class="nav-icon fas fa-tachometer-alt"></i> <p>Dashboard</p></a></li>
+                    <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-th"></i> <p>Content Board</p></a></li>
+                    <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-calendar"></i> <p>Calendar</p></a></li>
+                    <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-list"></i> <p>Contents</p></a></li>
+                    <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-cog"></i> <p>Settings</p></a></li>
+                </ul>
+            </nav>
+            <div class="mt-5">
+                <a href="#" class="btn btn-block btn-danger">Sign out</a>
+            </div>
+        </div>
+    </aside>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper" style="margin-left: 250px;">
+        <section class="content pt-4">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="small-box bg-white shadow-sm">
+                            <div class="inner">
+                                <h3>21</h3>
+                                <p>Contents Created</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-pen"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">Start Creating <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5>Click Through Rate</h5>
+                                <canvas id="ctrChart" height="80"></canvas>
+                                <div class="row text-center mt-3">
+                                    <div class="col-6">
+                                        <span class="text-bold">12k</span><br>Impressions
+                                    </div>
+                                    <div class="col-6">
+                                        <span class="text-bold">24h</span><br>Avg. Time
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card bg-primary text-white">
+                            <div class="card-body text-center">
+                                <img src="https://randomuser.me/api/portraits/men/2.jpg" class="img-circle mb-2" width="60" alt="Upgrade">
+                                <h5>Upgrade your plan</h5>
+                                <p>Get more features and analytics</p>
+                                <a href="#" class="btn btn-light">14 Day Free Trial</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Your last week content overview</h3>
+                                <div class="card-tools">
+                                    <span class="mr-3">18 <small>Contents</small></span>
+                                    <span>10k <small>Impressions</small></span>
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Platform</th>
+                                            <th>Title</th>
+                                            <th>Status</th>
+                                            <th>Date</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><img src="https://img.icons8.com/color/24/000000/youtube-play.png"/></td>
+                                            <td>How to grow on YouTube</td>
+                                            <td><span class="badge badge-success">Published</span></td>
+                                            <td>2024-05-01</td>
+                                            <td><button class="btn btn-xs btn-info"><i class="fas fa-edit"></i></button></td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="https://img.icons8.com/color/24/000000/youtube-play.png"/></td>
+                                            <td>Best editing tips</td>
+                                            <td><span class="badge badge-warning">Draft</span></td>
+                                            <td>2024-05-03</td>
+                                            <td><button class="btn btn-xs btn-info"><i class="fas fa-edit"></i></button></td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="https://img.icons8.com/color/24/000000/youtube-play.png"/></td>
+                                            <td>The future of video</td>
+                                            <td><span class="badge badge-success">Published</span></td>
+                                            <td>2024-05-05</td>
+                                            <td><button class="btn btn-xs btn-info"><i class="fas fa-edit"></i></button></td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="https://img.icons8.com/color/24/000000/facebook-new.png"/></td>
+                                            <td>How to reach more with reels</td>
+                                            <td><span class="badge badge-danger">Rejected</span></td>
+                                            <td>2024-05-06</td>
+                                            <td><button class="btn btn-xs btn-info"><i class="fas fa-edit"></i></button></td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="https://img.icons8.com/color/24/000000/facebook-new.png"/></td>
+                                            <td>Grow your channel with analytics</td>
+                                            <td><span class="badge badge-success">Published</span></td>
+                                            <td>2024-05-07</td>
+                                            <td><button class="btn btn-xs btn-info"><i class="fas fa-edit"></i></button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<!-- AdminLTE JS -->
+<script src="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/jquery/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ url_for('static', filename='AdminLTE-3.2.0/dist/js/adminlte.min.js') }}"></script>
+<script src="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/chart.js/Chart.min.js') }}"></script>
+<script>
+    // Chart.js example for Click Through Rate
+    var ctx = document.getElementById('ctrChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Clicked', 'Not Clicked'],
+            datasets: [{
+                data: [30, 70],
+                backgroundColor: ['#007bff', '#e9ecef']
+            }]
+        },
+        options: {
+            cutout: '80%',
+            plugins: { legend: { display: false } }
+        }
+    });
+</script>
+</body>
+</html> 
