@@ -3,15 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Content Board</title>
+    <title>{{ content.title }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE-3.2.0/dist/css/adminlte.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/fontawesome-free/css/all.min.css') }}">
     <style>
-        .card-grid { display: flex; flex-wrap: wrap; gap: 24px; }
-        .content-card { flex: 1 1 45%; min-width: 350px; max-width: 48%; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin-bottom: 24px; padding: 24px; }
-        .content-card h5 { margin-bottom: 8px; }
-        .content-card .meta { color: #888; font-size: 0.95em; margin-bottom: 12px; }
-        .content-card .excerpt { margin-bottom: 16px; }
+        .content-card { max-width: 700px; margin: 40px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); padding: 32px; }
+        .content-card h2 { margin-bottom: 12px; }
+        .content-card .meta { color: #888; font-size: 0.95em; margin-bottom: 18px; }
     </style>
 </head>
 <body class="hold-transition sidebar-mini">
@@ -20,15 +18,10 @@
     <div class="content-wrapper" style="margin-left: 250px;">
         <section class="content pt-4">
             <div class="container-fluid">
-                <div class="card-grid">
-                    {% for content in contents %}
-                    <div class="content-card">
-                        <h5>{{ content.title }}</h5>
-                        <div class="meta"><i class="far fa-clock"></i> {{ content.date }}</div>
-                        <div class="excerpt">{{ content.body[:200] }}{% if content.body|length > 200 %}...{% endif %}</div>
-                        <a href="{{ url_for('view_content', id=content.id) }}" class="btn btn-primary btn-sm">Read More</a>
-                    </div>
-                    {% endfor %}
+                <div class="content-card">
+                    <h2>{{ content.title }}</h2>
+                    <div class="meta"><i class="far fa-clock"></i> {{ content.date }}</div>
+                    <div>{{ content.body }}</div>
                 </div>
             </div>
         </section>

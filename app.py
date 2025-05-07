@@ -23,6 +23,7 @@ class Content(db.Model):
     status = db.Column(db.String(50), nullable=False)
     date = db.Column(db.String(50), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    body = db.Column(db.Text, nullable=True)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -70,7 +71,8 @@ def create_content():
             platform=request.form['platform'],
             status=request.form['status'],
             date=request.form['date'],
-            user_id=current_user.id
+            user_id=current_user.id,
+            body=request.form['body']
         )
         db.session.add(content)
         db.session.commit()
@@ -86,6 +88,7 @@ def edit_content(id):
         content.platform = request.form['platform']
         content.status = request.form['status']
         content.date = request.form['date']
+        content.body = request.form['body']
         db.session.commit()
         return redirect(url_for('dashboard'))
     return render_template('content_form.html', action='Edit', content=content)
@@ -101,7 +104,14 @@ def delete_content(id):
 @app.route('/content-board')
 @login_required
 def content_board():
-    return render_template('content_board.html')
+    contents = Content.query.order_by(Content.date.desc()).all()
+    return render_template('content_board.html', contents=contents)
+
+@app.route('/content/<int:id>')
+@login_required
+def view_content(id):
+    content = Content.query.get_or_404(id)
+    return render_template('view_content.html', content=content)
 
 @app.route('/calendar')
 @login_required
@@ -154,4 +164,28 @@ if __name__ == '__main__':
     if not os.path.exists('cms.db'):
         with app.app_context():
             db.create_all()
+            # Populate sample contents if empty
+            if Content.query.count() == 0:
+                sample_contents = [
+                    Content(title='The Art of Bonsai', platform='Blog', status='Published', date='2025-05-07 17:39', user_id=1, body="Bonsai is the Japanese art of growing miniature trees in containers. It requires patience, skill, and a deep understanding of horticulture. This article explores the history, techniques, and philosophy behind bonsai cultivation."),
+                    Content(title='Exploring Deep Sea Creatures', platform='Science', status='Published', date='2025-05-07 17:39', user_id=1, body="The deep sea is home to some of the most bizarre and fascinating creatures on Earth. From bioluminescent jellyfish to the mysterious giant squid, discover the wonders of the ocean's depths."),
+                    Content(title='A Guide to Urban Gardening', platform='Lifestyle', status='Published', date='2025-05-07 17:39', user_id=1, body="Urban gardening is a growing trend among city dwellers. Learn how to start your own garden in small spaces, choose the right plants, and enjoy fresh produce year-round."),
+                    Content(title='History of the Silk Road', platform='History', status='Published', date='2025-05-07 17:39', user_id=1, body="The Silk Road was an ancient network of trade routes that connected the East and West. It played a crucial role in cultural, commercial, and technological exchange for centuries."),
+                    Content(title='Introduction to Origami', platform='Art', status='Published', date='2025-05-07 17:39', user_id=1, body="Origami, the art of paper folding, originated in Japan and has become popular worldwide. This guide covers basic folds, traditional models, and creative projects for all ages."),
+                    Content(title='The Basics of Astronomy', platform='Science', status='Published', date='2025-05-07 17:39', user_id=1, body="Astronomy is the study of celestial objects and phenomena. Learn about stars, planets, galaxies, and the tools astronomers use to explore the universe."),
+                    Content(title='How to Make Sourdough Bread', platform='Food', status='Published', date='2025-05-07 17:39', user_id=1, body="Sourdough bread is known for its tangy flavor and chewy texture. This article provides a step-by-step guide to making your own sourdough starter and baking delicious bread at home."),
+                    Content(title='Wildlife of the Amazon Rainforest', platform='Nature', status='Published', date='2025-05-07 17:39', user_id=1, body="The Amazon rainforest is one of the most biodiverse places on Earth. Explore the unique animals and plants that inhabit this vast ecosystem."),
+                    Content(title='Understanding Renewable Energy', platform='Technology', status='Published', date='2025-05-07 17:39', user_id=1, body="Renewable energy sources like solar, wind, and hydro are transforming the way we power our world. Discover the benefits and challenges of transitioning to clean energy."),
+                    Content(title='The World of Competitive Chess', platform='Games', status='Published', date='2025-05-07 17:39', user_id=1, body="Chess is a game of strategy and intellect. This article delves into the world of competitive chess, famous grandmasters, and tips for improving your game."),
+                    Content(title='Traveling in Scandinavia', platform='Travel', status='Published', date='2025-05-07 17:39', user_id=1, body="Scandinavia offers stunning landscapes, rich history, and vibrant cultures. Plan your next adventure with our guide to the best destinations in Norway, Sweden, and Denmark."),
+                    Content(title='Basics of Digital Photography', platform='Photography', status='Published', date='2025-05-07 17:39', user_id=1, body="Digital photography has made capturing moments easier than ever. Learn about camera settings, composition, and editing techniques to take your photos to the next level."),
+                    Content(title='The Science of Sleep', platform='Health', status='Published', date='2025-05-07 17:39', user_id=1, body="Sleep is essential for health and well-being. Explore the science behind sleep cycles, common disorders, and tips for getting a better night's rest."),
+                    Content(title='Building Your First Birdhouse', platform='DIY', status='Published', date='2025-05-07 17:39', user_id=1, body="Birdhouses provide shelter for local wildlife and can be a fun DIY project. Follow our instructions to build a simple and effective birdhouse for your garden."),
+                    Content(title='Learning Calligraphy', platform='Art', status='Published', date='2025-05-07 17:39', user_id=1, body="Calligraphy is the art of beautiful writing. This beginner's guide covers tools, basic strokes, and practice exercises to help you get started."),
+                    Content(title='The Benefits of Meditation', platform='Wellness', status='Published', date='2025-05-07 17:39', user_id=1, body="Meditation can reduce stress, improve focus, and enhance overall well-being. Learn different meditation techniques and how to incorporate them into your daily routine."),
+                    Content(title='Exploring Ancient Egypt', platform='History', status='Published', date='2025-05-07 17:39', user_id=1, body="Ancient Egypt is known for its pyramids, pharaohs, and rich mythology. Discover the fascinating history and culture of this ancient civilization."),
+                    Content(title='Introduction to Coding with Python', platform='Technology', status='Published', date='2025-05-07 17:39', user_id=1, body="Python is a versatile programming language used in web development, data science, and more. This article introduces the basics of Python and how to write your first program."),
+                ]
+                db.session.bulk_save_objects(sample_contents)
+                db.session.commit()
     app.run(debug=True) 
