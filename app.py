@@ -207,4 +207,20 @@ if __name__ == '__main__':
                 ]
                 db.session.bulk_save_objects(sample_contents)
                 db.session.commit()
+            # Populate sample events if empty
+            if Event.query.count() == 0:
+                import datetime
+                today = datetime.date.today()
+                events = [
+                    Event(title='Admin Birthday', date=f'{today.year}-06-27', user_id=1),
+                    Event(title='Team Meeting', date=(today + datetime.timedelta(days=7)).isoformat(), user_id=1),
+                    Event(title='Project Deadline', date=(today + datetime.timedelta(days=14)).isoformat(), user_id=1),
+                    Event(title='Conference', date=(today + datetime.timedelta(days=21)).isoformat(), user_id=1),
+                    Event(title='Vacation', date=(today + datetime.timedelta(days=30)).isoformat(), user_id=1),
+                    Event(title='Workshop', date=(today + datetime.timedelta(days=40)).isoformat(), user_id=1),
+                    Event(title='Release Day', date=(today + datetime.timedelta(days=50)).isoformat(), user_id=1),
+                    Event(title='Hackathon', date=(today + datetime.timedelta(days=60)).isoformat(), user_id=1),
+                ]
+                db.session.bulk_save_objects(events)
+                db.session.commit()
     app.run(debug=True) 
