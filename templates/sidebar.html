@@ -1,0 +1,27 @@
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <a href="#" class="brand-link">
+        <span class="brand-text font-weight-light">Xellora</span>
+    </a>
+    <div class="sidebar">
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src="https://randomuser.me/api/portraits/men/1.jpg" class="img-circle elevation-2" alt="User Image">
+            </div>
+            <div class="info">
+                <a href="{{ url_for('account') }}" class="d-block">Tuhel rana<br><small>Content Creator</small></a>
+            </div>
+        </div>
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" role="menu">
+                <li class="nav-item"><a href="{{ url_for('dashboard') }}" class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}"><i class="nav-icon fas fa-tachometer-alt"></i> <p>Dashboard</p></a></li>
+                <li class="nav-item"><a href="{{ url_for('content_board') }}" class="nav-link {% if request.endpoint == 'content_board' %}active{% endif %}"><i class="nav-icon fas fa-th"></i> <p>Content Board</p></a></li>
+                <li class="nav-item"><a href="{{ url_for('calendar') }}" class="nav-link {% if request.endpoint == 'calendar' %}active{% endif %}"><i class="nav-icon fas fa-calendar"></i> <p>Calendar</p></a></li>
+                <li class="nav-item"><a href="{{ url_for('contents') }}" class="nav-link {% if request.endpoint == 'contents' %}active{% endif %}"><i class="nav-icon fas fa-list"></i> <p>Contents</p></a></li>
+                <li class="nav-item"><a href="{{ url_for('settings') }}" class="nav-link {% if request.endpoint == 'settings' %}active{% endif %}"><i class="nav-icon fas fa-cog"></i> <p>Settings</p></a></li>
+            </ul>
+        </nav>
+        <div class="mt-5">
+            <a href="{{ url_for('logout') }}" class="btn btn-block btn-danger">Sign out</a>
+        </div>
+    </div>
+</aside> 

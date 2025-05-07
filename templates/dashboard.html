@@ -18,33 +18,7 @@
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
     <!-- Sidebar -->
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
-        <a href="#" class="brand-link">
-            <span class="brand-text font-weight-light">Xellora</span>
-        </a>
-        <div class="sidebar">
-            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                    <img src="https://randomuser.me/api/portraits/men/1.jpg" class="img-circle elevation-2" alt="User Image">
-                </div>
-                <div class="info">
-                    <a href="#" class="d-block">Tuhel rana<br><small>Content Creator</small></a>
-                </div>
-            </div>
-            <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
-                    <li class="nav-item"><a href="#" class="nav-link active"><i class="nav-icon fas fa-tachometer-alt"></i> <p>Dashboard</p></a></li>
-                    <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-th"></i> <p>Content Board</p></a></li>
-                    <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-calendar"></i> <p>Calendar</p></a></li>
-                    <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-list"></i> <p>Contents</p></a></li>
-                    <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-cog"></i> <p>Settings</p></a></li>
-                </ul>
-            </nav>
-            <div class="mt-5">
-                <a href="#" class="btn btn-block btn-danger">Sign out</a>
-            </div>
-        </div>
-    </aside>
+    {% include 'sidebar.html' %}
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper" style="margin-left: 250px;">
         <section class="content pt-4">
@@ -59,7 +33,7 @@
                             <div class="icon">
                                 <i class="fas fa-pen"></i>
                             </div>
-                            <a href="#" class="small-box-footer">Start Creating <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="{{ url_for('create_content') }}" class="small-box-footer">Start Creating <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <div class="col-md-5">
@@ -111,41 +85,20 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {% for content in contents %}
                                         <tr>
-                                            <td><img src="https://img.icons8.com/color/24/000000/youtube-play.png"/></td>
-                                            <td>How to grow on YouTube</td>
-                                            <td><span class="badge badge-success">Published</span></td>
-                                            <td>2024-05-01</td>
-                                            <td><button class="btn btn-xs btn-info"><i class="fas fa-edit"></i></button></td>
+                                            <td>{{ content.platform }}</td>
+                                            <td>{{ content.title }}</td>
+                                            <td><span class="badge badge-{{ 'success' if content.status == 'Published' else 'warning' if content.status == 'Draft' else 'danger' }}">{{ content.status }}</span></td>
+                                            <td>{{ content.date }}</td>
+                                            <td>
+                                                <a href="{{ url_for('edit_content', id=content.id) }}" class="btn btn-xs btn-info"><i class="fas fa-edit"></i></a>
+                                                <form action="{{ url_for('delete_content', id=content.id) }}" method="POST" style="display:inline;">
+                                                    <button type="submit" class="btn btn-xs btn-danger" onclick="return confirm('Delete this content?')"><i class="fas fa-trash"></i></button>
+                                                </form>
+                                            </td>
                                         </tr>
-                                        <tr>
-                                            <td><img src="https://img.icons8.com/color/24/000000/youtube-play.png"/></td>
-                                            <td>Best editing tips</td>
-                                            <td><span class="badge badge-warning">Draft</span></td>
-                                            <td>2024-05-03</td>
-                                            <td><button class="btn btn-xs btn-info"><i class="fas fa-edit"></i></button></td>
-                                        </tr>
-                                        <tr>
-                                            <td><img src="https://img.icons8.com/color/24/000000/youtube-play.png"/></td>
-                                            <td>The future of video</td>
-                                            <td><span class="badge badge-success">Published</span></td>
-                                            <td>2024-05-05</td>
-                                            <td><button class="btn btn-xs btn-info"><i class="fas fa-edit"></i></button></td>
-                                        </tr>
-                                        <tr>
-                                            <td><img src="https://img.icons8.com/color/24/000000/facebook-new.png"/></td>
-                                            <td>How to reach more with reels</td>
-                                            <td><span class="badge badge-danger">Rejected</span></td>
-                                            <td>2024-05-06</td>
-                                            <td><button class="btn btn-xs btn-info"><i class="fas fa-edit"></i></button></td>
-                                        </tr>
-                                        <tr>
-                                            <td><img src="https://img.icons8.com/color/24/000000/facebook-new.png"/></td>
-                                            <td>Grow your channel with analytics</td>
-                                            <td><span class="badge badge-success">Published</span></td>
-                                            <td>2024-05-07</td>
-                                            <td><button class="btn btn-xs btn-info"><i class="fas fa-edit"></i></button></td>
-                                        </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>

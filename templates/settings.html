@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE-3.2.0/dist/css/adminlte.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/fontawesome-free/css/all.min.css') }}">
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    {% include 'sidebar.html' %}
+    <div class="content-wrapper" style="margin-left: 250px;">
+        <section class="content pt-4">
+            <div class="container-fluid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Settings</h3>
+                    </div>
+                    <div class="card-body">
+                        <h5>User Preferences</h5>
+                        <p>Settings for notifications, language, etc.</p>
+                        <hr>
+                        <h5>App Settings</h5>
+                        <p>General application settings and configurations.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/jquery/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ url_for('static', filename='AdminLTE-3.2.0/dist/js/adminlte.min.js') }}"></script>
+</body>
+</html> 

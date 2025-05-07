@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Contents</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE-3.2.0/dist/css/adminlte.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/fontawesome-free/css/all.min.css') }}">
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    {% include 'sidebar.html' %}
+    <div class="content-wrapper" style="margin-left: 250px;">
+        <section class="content pt-4">
+            <div class="container-fluid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Manage Contents</h3>
+                        <a href="{{ url_for('create_content') }}" class="btn btn-primary float-right">Add Content</a>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Platform</th>
+                                    <th>Title</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for content in contents %}
+                                <tr>
+                                    <td>{{ content.platform }}</td>
+                                    <td>{{ content.title }}</td>
+                                    <td><span class="badge badge-{{ 'success' if content.status == 'Published' else 'warning' if content.status == 'Draft' else 'danger' }}">{{ content.status }}</span></td>
+                                    <td>{{ content.date }}</td>
+                                    <td>
+                                        <a href="{{ url_for('edit_content', id=content.id) }}" class="btn btn-xs btn-info"><i class="fas fa-edit"></i></a>
+                                        <form action="{{ url_for('delete_content', id=content.id) }}" method="POST" style="display:inline;">
+                                            <button type="submit" class="btn btn-xs btn-danger" onclick="return confirm('Delete this content?')"><i class="fas fa-trash"></i></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/jquery/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ url_for('static', filename='AdminLTE-3.2.0/dist/js/adminlte.min.js') }}"></script>
+</body>
+</html> 

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Board</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE-3.2.0/dist/css/adminlte.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/fontawesome-free/css/all.min.css') }}">
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    {% include 'sidebar.html' %}
+    <div class="content-wrapper" style="margin-left: 250px;">
+        <section class="content pt-4">
+            <div class="container-fluid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Content Board</h3>
+                        <a href="#" class="btn btn-primary float-right">Add Idea</a>
+                    </div>
+                    <div class="card-body">
+                        <p>Here you can brainstorm and organize your content ideas.</p>
+                        <ul class="list-group">
+                            <li class="list-group-item">Sample Idea 1</li>
+                            <li class="list-group-item">Sample Idea 2</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/jquery/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='AdminLTE-3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ url_for('static', filename='AdminLTE-3.2.0/dist/js/adminlte.min.js') }}"></script>
+</body>
+</html> 
