@@ -169,7 +169,160 @@ def contents():
                 'date': '2025-05-07 17:39',
                 'body': 'Origami, the art of paper folding, originated in Japan and has become popular worldwide. This guide covers basic folds, traditional models, and creative projects for all ages.'
             },
-            # ...tambahkan data lain sesuai kebutuhan...
+            {
+                'title': 'How to Start a Podcast',
+                'platform': 'Technology',
+                'status': 'Published',
+                'date': '2025-05-08 10:00',
+                'body': 'Podcasting is a great way to share your voice with the world. This guide covers equipment, planning, and publishing.'
+            },
+            {
+                'title': '10 Tips for Healthy Living',
+                'platform': 'Health',
+                'status': 'Published',
+                'date': '2025-05-08 11:00',
+                'body': 'Living healthy is about balance, nutrition, and exercise. Here are 10 tips to get you started.'
+            },
+            {
+                'title': 'Traveling on a Budget',
+                'platform': 'Travel',
+                'status': 'Draft',
+                'date': '2025-05-08 12:00',
+                'body': 'You can see the world without breaking the bank. Learn how to travel smart and save money.'
+            },
+            {
+                'title': 'Wildlife Photography Tips',
+                'platform': 'Photography',
+                'status': 'Published',
+                'date': '2025-05-08 13:00',
+                'body': 'Capture stunning wildlife photos with these essential tips for beginners and pros.'
+            },
+            {
+                'title': 'The Science of Sleep',
+                'platform': 'Health',
+                'status': 'Published',
+                'date': '2025-05-08 14:00',
+                'body': 'Sleep is essential for health and well-being. Explore the science behind sleep cycles and tips for better rest.'
+            },
+            {
+                'title': 'Building Your First Birdhouse',
+                'platform': 'DIY',
+                'status': 'Published',
+                'date': '2025-05-08 15:00',
+                'body': 'Birdhouses provide shelter for local wildlife and can be a fun DIY project. Follow our instructions to build a simple birdhouse.'
+            },
+            {
+                'title': 'Learning Calligraphy',
+                'platform': 'Art',
+                'status': 'Draft',
+                'date': '2025-05-08 16:00',
+                'body': 'Calligraphy is the art of beautiful writing. This beginner guide covers tools, basic strokes, and practice exercises.'
+            },
+            {
+                'title': 'The Benefits of Meditation',
+                'platform': 'Wellness',
+                'status': 'Published',
+                'date': '2025-05-08 17:00',
+                'body': 'Meditation can reduce stress, improve focus, and enhance overall well-being. Learn different meditation techniques.'
+            },
+            {
+                'title': 'Exploring Ancient Egypt',
+                'platform': 'History',
+                'status': 'Published',
+                'date': '2025-05-08 18:00',
+                'body': 'Ancient Egypt is known for its pyramids, pharaohs, and rich mythology. Discover the fascinating history and culture.'
+            },
+            {
+                'title': 'Introduction to Coding with Python',
+                'platform': 'Technology',
+                'status': 'Published',
+                'date': '2025-05-08 19:00',
+                'body': 'Python is a versatile programming language used in web development, data science, and more. Learn the basics here.'
+            },
+            {
+                'title': 'Sustainable Fashion Guide',
+                'platform': 'Fashion',
+                'status': 'Published',
+                'date': '2025-05-09 10:00',
+                'body': 'Learn how to build an eco-friendly wardrobe. This guide covers sustainable materials and ethical brands.'
+            },
+            {
+                'title': 'Mindful Parenting in the Digital Age',
+                'platform': 'Parenting',
+                'status': 'Draft',
+                'date': '2025-05-09 11:00',
+                'body': 'Navigating parenthood in a world of screens and social media. Practical advice for raising children.'
+            },
+            {
+                'title': 'The Psychology of Color in Marketing',
+                'platform': 'Marketing',
+                'status': 'Published',
+                'date': '2025-05-09 12:00',
+                'body': 'Colors influence consumer behavior and brand perception. Explore how different colors affect emotions.'
+            },
+            {
+                'title': 'Home Workout Revolution',
+                'platform': 'Fitness',
+                'status': 'Published',
+                'date': '2025-05-09 13:00',
+                'body': 'Transform your living space into a personal gym. Effective workout routines for all levels.'
+            },
+            {
+                'title': 'Cryptocurrency Basics',
+                'platform': 'Finance',
+                'status': 'Published',
+                'date': '2025-05-09 14:00',
+                'body': 'Understanding the fundamentals of cryptocurrency. From blockchain technology to investment strategies.'
+            },
+            {
+                'title': 'The Art of Storytelling',
+                'platform': 'Writing',
+                'status': 'Published',
+                'date': '2025-05-09 15:00',
+                'body': 'Master the craft of storytelling. Techniques for creating compelling narratives.'
+            },
+            {
+                'title': 'Urban Foraging Guide',
+                'platform': 'Nature',
+                'status': 'Published',
+                'date': '2025-05-09 16:00',
+                'body': 'Discover edible plants in your city. Learn to identify, harvest, and prepare wild foods.'
+            },
+            {
+                'title': 'Digital Minimalism',
+                'platform': 'Lifestyle',
+                'status': 'Draft',
+                'date': '2025-05-09 17:00',
+                'body': 'Simplify your digital life. Strategies for reducing screen time and organizing digital spaces.'
+            },
+            {
+                'title': 'The Science of Happiness',
+                'platform': 'Psychology',
+                'status': 'Published',
+                'date': '2025-05-09 18:00',
+                'body': 'Research-backed strategies for increasing happiness and well-being.'
+            },
+            {
+                'title': 'Smart Home Automation',
+                'platform': 'Technology',
+                'status': 'Published',
+                'date': '2025-05-09 19:00',
+                'body': 'Transform your home with smart technology. Guide to setting up automated systems.'
+            },
+            {
+                'title': 'Artisanal Coffee Brewing',
+                'platform': 'Food',
+                'status': 'Published',
+                'date': '2025-05-09 20:00',
+                'body': 'Master the art of coffee brewing. From bean selection to brewing methods.'
+            },
+            {
+                'title': 'Mind Mapping Techniques',
+                'platform': 'Productivity',
+                'status': 'Published',
+                'date': '2025-05-09 21:00',
+                'body': 'Boost your creativity and organization with mind mapping.'
+            },
         ]
         for data in dummy_data:
             content = Content(
