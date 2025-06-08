@@ -14,6 +14,37 @@
     <div class="content-wrapper page-content" style="margin-left: 250px;">
         <section class="content pt-4">
             <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-md-4">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search...">
+                    </div>
+                    <div class="col-md-4">
+                        <select id="platformFilter" class="form-control">
+                            <option value="">All Platforms</option>
+                            <option value="Blog">Blog</option>
+                            <option value="Science">Science</option>
+                            <option value="Lifestyle">Lifestyle</option>
+                            <option value="History">History</option>
+                            <option value="Art">Art</option>
+                            <option value="Food">Food</option>
+                            <option value="Nature">Nature</option>
+                            <option value="Technology">Technology</option>
+                            <option value="Games">Games</option>
+                            <option value="Travel">Travel</option>
+                            <option value="Photography">Photography</option>
+                            <option value="Health">Health</option>
+                            <option value="DIY">DIY</option>
+                            <option value="Wellness">Wellness</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <select id="statusFilter" class="form-control">
+                            <option value="">All Status</option>
+                            <option value="Published">Published</option>
+                            <option value="Draft">Draft</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-12">
                         <div class="card animate-item">
@@ -70,6 +101,23 @@
 function generateDummy() {
     fetch('/contents/generate_dummy', {method: 'POST'}).then(() => location.reload());
 }
+
+$('#searchInput, #platformFilter, #statusFilter').on('input change', function() {
+    var search = $('#searchInput').val().toLowerCase();
+    var platform = $('#platformFilter').val();
+    var status = $('#statusFilter').val();
+    $('table tbody tr').each(function() {
+        var row = $(this);
+        var text = row.text().toLowerCase();
+        var rowPlatform = row.find('td:eq(1)').text();
+        var rowStatus = row.find('td:eq(2)').text();
+        var show = true;
+        if (search && text.indexOf(search) === -1) show = false;
+        if (platform && rowPlatform !== platform) show = false;
+        if (status && rowStatus !== status) show = false;
+        row.toggle(show);
+    });
+});
 </script>
 </body>
 </html> 
