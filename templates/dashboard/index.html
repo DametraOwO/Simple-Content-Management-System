@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+    <!-- Content Header -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Dashboard</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Content Statistics -->
+            <div class="row">
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>{{ total_contents }}</h3>
+                            <p>Total Contents</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-success">
+                        <div class="inner">
+                            <h3>{{ published_contents }}</h3>
+                            <p>Published Contents</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-warning">
+                        <div class="inner">
+                            <h3>{{ draft_contents }}</h3>
+                            <p>Draft Contents</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-pencil-alt"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-danger">
+                        <div class="inner">
+                            <h3>{{ upcoming_events|length }}</h3>
+                            <p>Upcoming Events</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Platform Statistics -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Content by Platform</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Platform</th>
+                                            <th>Total Contents</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for platform, count in platform_stats.items() %}
+                                        <tr>
+                                            <td>{{ platform }}</td>
+                                            <td>{{ count }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Contents -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Recent Contents</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Platform</th>
+                                            <th>Status</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for content in recent_contents %}
+                                        <tr>
+                                            <td>
+                                                <a href="{{ url_for('content.view', id=content.id) }}">
+                                                    {{ content.title }}
+                                                </a>
+                                            </td>
+                                            <td>{{ content.platform }}</td>
+                                            <td>
+                                                <span class="badge badge-{{ 'success' if content.status == 'Published' else 'warning' }}">
+                                                    {{ content.status }}
+                                                </span>
+                                            </td>
+                                            <td>{{ content.date }}</td>
+                                        </tr>
+                                        {% else %}
+                                        <tr>
+                                            <td colspan="4" class="text-center">No recent contents</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upcoming Events -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Upcoming Events</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Date</th>
+                                            <th>Location</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for event in upcoming_events %}
+                                        <tr>
+                                            <td>{{ event.title }}</td>
+                                            <td>{{ event.date }}</td>
+                                            <td>{{ event.location }}</td>
+                                            <td>
+                                                <span class="badge badge-{{ 'success' if event.status == 'Confirmed' else 'warning' }}">
+                                                    {{ event.status }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        {% else %}
+                                        <tr>
+                                            <td colspan="4" class="text-center">No upcoming events</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %} 

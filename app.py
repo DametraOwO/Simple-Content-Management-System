@@ -130,8 +130,60 @@ def calendar():
 @app.route('/contents')
 @login_required
 def contents():
-    contents = Content.query.filter_by(user_id=current_user.id).all()
-    return render_template('contents.html', contents=contents)
+    # Cek apakah user belum punya konten
+    user_contents = Content.query.filter_by(user_id=current_user.id).all()
+    if not user_contents:
+        dummy_data = [
+            {
+                'title': 'The Art of Bonsai',
+                'platform': 'Blog',
+                'status': 'Published',
+                'date': '2025-05-07 17:39',
+                'body': 'Bonsai is the Japanese art of growing miniature trees in containers. It requires patience, skill, dan pemahaman hortikultura. Artikel ini membahas sejarah, teknik, dan filosofi bonsai.'
+            },
+            {
+                'title': 'Exploring Deep Sea Creatures',
+                'platform': 'Science',
+                'status': 'Published',
+                'date': '2025-05-07 17:39',
+                'body': 'The deep sea is home to some of the most bizarre and fascinating creatures on Earth. From bioluminescent jellyfish to the mysterious giant squid, discover the wonders of the ocean.'
+            },
+            {
+                'title': 'A Guide to Urban Gardening',
+                'platform': 'Lifestyle',
+                'status': 'Published',
+                'date': '2025-05-07 17:39',
+                'body': 'Urban gardening is a growing trend among city dwellers. Learn how to start your own garden in small spaces, choose the right plants, and enjoy fresh produce year-round.'
+            },
+            {
+                'title': 'History of the Silk Road',
+                'platform': 'History',
+                'status': 'Published',
+                'date': '2025-05-07 17:39',
+                'body': 'The Silk Road was an ancient network of trade routes that connected the East and West. It played a crucial role in cultural, commercial, and technological exchange for centuries.'
+            },
+            {
+                'title': 'Introduction to Origami',
+                'platform': 'Art',
+                'status': 'Published',
+                'date': '2025-05-07 17:39',
+                'body': 'Origami, the art of paper folding, originated in Japan and has become popular worldwide. This guide covers basic folds, traditional models, and creative projects for all ages.'
+            },
+            # ...tambahkan data lain sesuai kebutuhan...
+        ]
+        for data in dummy_data:
+            content = Content(
+                title=data['title'],
+                platform=data['platform'],
+                status=data['status'],
+                date=data['date'],
+                body=data['body'],
+                user_id=current_user.id
+            )
+            db.session.add(content)
+        db.session.commit()
+        user_contents = Content.query.filter_by(user_id=current_user.id).all()
+    return render_template('contents.html', contents=user_contents)
 
 @app.route('/settings')
 @login_required
@@ -178,6 +230,61 @@ def add_event():
     db.session.add(event)
     db.session.commit()
     return {"success": True}
+
+@app.route('/contents/generate_dummy', methods=['POST'])
+@login_required
+def generate_dummy_contents():
+    dummy_data = [
+        {
+            'title': 'The Art of Bonsai',
+            'platform': 'Blog',
+            'status': 'Published',
+            'date': '2025-05-07 17:39',
+            'body': 'Bonsai is the Japanese art of growing miniature trees in containers. It requires patience, skill, dan pemahaman hortikultura. Artikel ini membahas sejarah, teknik, dan filosofi bonsai.'
+        },
+        {
+            'title': 'Exploring Deep Sea Creatures',
+            'platform': 'Science',
+            'status': 'Published',
+            'date': '2025-05-07 17:39',
+            'body': 'The deep sea is home to some of the most bizarre and fascinating creatures on Earth. From bioluminescent jellyfish to the mysterious giant squid, discover the wonders of the ocean.'
+        },
+        {
+            'title': 'A Guide to Urban Gardening',
+            'platform': 'Lifestyle',
+            'status': 'Published',
+            'date': '2025-05-07 17:39',
+            'body': 'Urban gardening is a growing trend among city dwellers. Learn how to start your own garden in small spaces, choose the right plants, and enjoy fresh produce year-round.'
+        },
+        {
+            'title': 'History of the Silk Road',
+            'platform': 'History',
+            'status': 'Published',
+            'date': '2025-05-07 17:39',
+            'body': 'The Silk Road was an ancient network of trade routes that connected the East and West. It played a crucial role in cultural, commercial, and technological exchange for centuries.'
+        },
+        {
+            'title': 'Introduction to Origami',
+            'platform': 'Art',
+            'status': 'Published',
+            'date': '2025-05-07 17:39',
+            'body': 'Origami, the art of paper folding, originated in Japan and has become popular worldwide. This guide covers basic folds, traditional models, and creative projects for all ages.'
+        },
+        # ...tambahkan data lain sesuai kebutuhan...
+    ]
+    for data in dummy_data:
+        content = Content(
+            title=data['title'],
+            platform=data['platform'],
+            status=data['status'],
+            date=data['date'],
+            body=data['body'],
+            user_id=current_user.id
+        )
+        db.session.add(content)
+    db.session.commit()
+    flash('Dummy contents created!', 'success')
+    return redirect(url_for('contents'))
 
 if __name__ == '__main__':
     if not os.path.exists('cms.db'):

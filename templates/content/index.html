@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}Contents{% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+    <!-- Content Header -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Contents</h1>
+                </div>
+                <div class="col-sm-6">
+                    <div class="float-sm-right">
+                        <a href="{{ url_for('content.create') }}" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Create New Content
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Content List -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">All Contents</h3>
+                    <div class="card-tools">
+                        <div class="input-group input-group-sm" style="width: 250px;">
+                            <input type="text" id="contentSearch" class="form-control float-right" placeholder="Search content...">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-default">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%">#</th>
+                                    <th style="width: 30%">Title</th>
+                                    <th style="width: 15%">Platform</th>
+                                    <th style="width: 15%">Status</th>
+                                    <th style="width: 15%">Date</th>
+                                    <th style="width: 20%">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for content in contents %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>
+                                        <a href="{{ url_for('content.view', id=content.id) }}" class="text-primary">
+                                            {{ content.title }}
+                                        </a>
+                                    </td>
+                                    <td>{{ content.platform }}</td>
+                                    <td>
+                                        <span class="badge badge-{{ 'success' if content.status == 'Published' else 'warning' }}">
+                                            {{ content.status }}
+                                        </span>
+                                    </td>
+                                    <td>{{ content.date }}</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a href="{{ url_for('content.view', id=content.id) }}" class="btn btn-info btn-sm" title="View">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{{ url_for('content.edit', id=content.id) }}" class="btn btn-warning btn-sm" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal{{ content.id }}" title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+
+                                        <!-- Delete Modal -->
+                                        <div class="modal fade" id="deleteModal{{ content.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel{{ content.id }}" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="deleteModalLabel{{ content.id }}">Confirm Delete</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Are you sure you want to delete "{{ content.title }}"?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                        <form action="{{ url_for('content.delete', id=content.id) }}" method="POST" style="display: inline;">
+                                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="6" class="text-center">No contents found. <a href="{{ url_for('content.create') }}">Create your first content</a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    // Search functionality
+    $("#contentSearch").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("table tbody tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+});
+</script>
+{% endblock %} 
